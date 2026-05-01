@@ -1,0 +1,8 @@
+[tool.pytest.ini_options]
+markers = [
+    "property: Property-based tests (min 100 iterations)",
+    "unit: Example-based unit tests",
+    "integration: End-to-end integration tests",
+    "slow: Tests requiring GPU or large data",
+]
+testpaths = ["tests"]
