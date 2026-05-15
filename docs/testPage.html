@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>华东杯数学建模比赛 提交页面</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f5f7fa;
+      color: #333;
+      padding: 2rem;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #1a1a2e;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .card h2 {
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      color: #16213e;
+    }
+
+    details>summary {
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    details>summary::-webkit-details-marker {
+      display: none;
+    }
+
+    details>summary::after {
+      content: '▶';
+      font-size: 0.75rem;
+      color: #999;
+      transition: transform 0.2s;
+    }
+
+    details[open]>summary::after {
+      transform: rotate(90deg);
+    }
+
+    .card h3 {
+      margin: 1rem 0 0.5rem;
+      font-size: 0.95rem;
+      color: #1a1a2e;
+    }
+
+    .card p,
+    .card li {
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .card ul,
+    .card ol {
+      padding-left: 1.2rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .card pre {
+      background: #f1f3f5;
+      padding: 0.8rem;
+      border-radius: 4px;
+      font-size: 0.82rem;
+      overflow-x: auto;
+      margin: 0.5rem 0;
+    }
+
+    .card code {
+      font-family: "SF Mono", Consolas, monospace;
+      font-size: 0.84rem;
+    }
+
+    .card .placeholder {
+      color: #999;
+      font-style: italic;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+
+    input[type="text"],
+    input[type="file"] {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+
+    button {
+      background: #0f3460;
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    button:hover {
+      background: #16213e;
+    }
+
+    button:disabled {
+      background: #aaa;
+      cursor: not-allowed;
+    }
+
+    .msg {
+      margin-top: 0.8rem;
+      padding: 0.6rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+
+    .msg.ok {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .msg.ok a {
+      color: #155724;
+      font-weight: bold;
+    }
+
+    .msg.err {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    /* ---------- Download button (CDN link) ---------- */
+    .btn-link {
+      display: inline-block;
+      background: #0f3460;
+      color: #fff;
+      text-decoration: none;
+      padding: 0.6rem 1.5rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+
+    .btn-link:hover {
+      background: #16213e;
+    }
+
+    /* ---------- Result display ---------- */
+    .result-view {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: #fff;
+    }
+
+    .status-badge.status-pending {
+      background: #e67e22;
+    }
+
+    .status-badge.status-running {
+      background: #3498db;
+    }
+
+    .status-badge.status-completed {
+      background: #27ae60;
+    }
+
+    .status-badge.status-failed,
+    .status-badge.status-timeout {
+      background: #e74c3c;
+    }
+
+    .result-meta {
+      color: #666;
+      font-size: 0.82rem;
+      line-height: 1.6;
+    }
+
+    .result-view details {
+      margin-top: 0.8rem;
+    }
+
+    .result-view details>summary {
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.9rem;
+      padding: 0.3rem 0;
+    }
+
+    .result-view h4 {
+      margin: 0.8rem 0 0.4rem;
+      font-size: 0.88rem;
+      color: #16213e;
+    }
+
+    table.ic-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      font-family: "SF Mono", Consolas, monospace;
+    }
+
+    table.ic-table th,
+    table.ic-table td {
+      text-align: right;
+      padding: 0.25rem 0.5rem;
+      border-bottom: 1px solid #e8eaed;
+    }
+
+    table.ic-table th:first-child,
+    table.ic-table td:first-child {
+      text-align: left;
+    }
+
+    table.ic-table thead th {
+      background: #eef1f4;
+      font-weight: 600;
+    }
+
+    .phase-timings {
+      margin-top: 0.8rem;
+    }
+
+    .phase-timings h4 {
+      margin: 0 0 0.4rem;
+      font-size: 0.88rem;
+      color: #16213e;
+    }
+
+    table.timing-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+    }
+
+    table.timing-table td {
+      padding: 0.3rem 0.5rem;
+      border-bottom: 1px solid #e8eaed;
+    }
+
+    table.timing-table td:first-child {
+      color: #555;
+    }
+
+    table.timing-table td:last-child {
+      text-align: right;
+      font-family: "SF Mono", Consolas, monospace;
+      color: #0f3460;
+      font-weight: 600;
+    }
+
+    .phase-hint {
+      margin-top: 0.4rem;
+      font-size: 0.78rem;
+      color: #777;
+    }
+
+    pre.error-log {
+      background: #2b2b2b;
+      color: #f0f0f0;
+      padding: 0.8rem;
+      border-radius: 4px;
+      font-size: 0.78rem;
+      line-height: 1.5;
+      max-height: 420px;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin-top: 0.4rem;
+    }
+
+    /* ---------- History table ---------- */
+    table.history-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+      margin-top: 0.8rem;
+    }
+
+    table.history-table th,
+    table.history-table td {
+      text-align: left;
+      padding: 0.4rem 0.5rem;
+      border-bottom: 1px solid #e8eaed;
+    }
+
+    table.history-table thead th {
+      background: #eef1f4;
+      font-weight: 600;
+      font-size: 0.82rem;
+    }
+
+    table.history-table td.id-cell {
+      font-family: "SF Mono", Consolas, monospace;
+      font-size: 0.78rem;
+      color: #0f3460;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    table.history-table td.id-cell:hover {
+      color: #16213e;
+    }
+
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 0.8rem;
+      font-size: 0.85rem;
+    }
+
+    .pagination button {
+      padding: 0.3rem 0.8rem;
+      font-size: 0.82rem;
+    }
+
+    .pagination span {
+      color: #666;
+    }
+
+    /* ---------- Highlighted notice cards ---------- */
+    .notice-card {
+      border-radius: 8px;
+      padding: 1.2rem 1.3rem;
+      margin-bottom: 1.2rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      border-left: 5px solid transparent;
+    }
+
+    .notice-card h2 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.7rem;
+      font-size: 1.05rem;
+    }
+
+    .notice-card.goal {
+      background: #fffaf0;
+      border-left-color: #e67e22;
+    }
+
+    .notice-card.goal h2 {
+      color: #a04b00;
+    }
+
+    .notice-card.schedule {
+      background: #eef7ff;
+      border-left-color: #2980b9;
+    }
+
+    .notice-card.schedule h2 {
+      color: #1a5276;
+    }
+
+    .notice-card.contact {
+      background: #f3eefe;
+      border-left-color: #7d3cc9;
+    }
+
+    .notice-card.contact h2 {
+      color: #4b1d8a;
+    }
+
+    .notice-card.submission {
+      background: #edfaf4;
+      border-left-color: #1e8449;
+    }
+
+    .notice-card.submission h2 {
+      color: #145a32;
+    }
+
+    .notice-card p,
+    .notice-card li {
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
+    .notice-card ul {
+      padding-left: 1.2rem;
+      margin: 0.3rem 0 0.2rem;
+    }
+
+    .schedule-timeline {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.4rem 0.9rem;
+      margin-top: 0.6rem;
+      font-size: 0.88rem;
+    }
+
+    .schedule-timeline .dt {
+      font-family: "SF Mono", Consolas, monospace;
+      font-weight: 600;
+      color: #1a5276;
+      white-space: nowrap;
+    }
+
+    .submit-status {
+      margin-top: 0.3rem;
+      margin-bottom: 0.8rem;
+      padding: 0.55rem 0.8rem;
+      border-radius: 4px;
+      font-size: 0.87rem;
+    }
+
+    .submit-status.pending-time {
+      background: #fff3cd;
+      color: #7d4e00;
+      border-left: 3px solid #e67e22;
+    }
+
+    .submit-status.open {
+      background: #d4edda;
+      color: #155724;
+      border-left: 3px solid #27ae60;
+    }
+
+    .submit-status.closed {
+      background: #f8d7da;
+      color: #721c24;
+      border-left: 3px solid #e74c3c;
+    }
+
+    .submit-status.loading {
+      background: #eef1f4;
+      color: #555;
+      border-left: 3px solid #999;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>第二十八届华东杯数学建模比赛 C 题提交页面</h1>
+
+  <div class="notice-card goal">
+    <h2>🎯 任务目标</h2>
+    <p>设计特征与模型，最大化在<strong>正常（非极端）行情</strong>以及<strong>极端行情</strong>区间下，对未来 5 分钟（<code>Ret5</code>）和未来 60
+      分钟（<code>Ret60</code>）收益预测信号的 IC。</p>
+  </div>
+
+  <div class="notice-card schedule">
+    <h2>📅 比赛日程（UTC+8）</h2>
+    <div class="schedule-timeline">
+      <span class="dt">2026-05-01 00:00:00</span>
+      <span>比赛正式开启；数据集开放下载，选手可开始<strong>本地</strong>特征构建与模型训练。</span>
+      <span class="dt">2026-05-06 00:00:00</span>
+      <span>提交通道开启，可向评测系统上传提交包。</span>
+      <span class="dt">2026-05-14 23:59:59</span>
+      <span>提交截止，系统不再接受新的提交。</span>
+    </div>
+    <details style="margin-top:0.8rem;">
+      <summary style="font-size:0.9rem;color:#1a5276;font-weight:600;cursor:pointer;">提交时间说明</summary>
+      <ol style="margin-top:0.5rem;font-size:0.87rem;color:#444;line-height:1.7;padding-left:1.3rem;">
+        <li>
+          本赛题较为复杂，特征构建与模型训练都需要相当的时间投入。前 5 天（05-01 ~
+          05-06）是预留给各位选手<strong>在本地充分训练与验证</strong>的窗口期，等大家的方案相对成熟后再统一开放提交，避免仓促提交造成的评测资源浪费。
+        </li>
+        <li style="margin-top:0.5rem;">
+          本题与其他题目参赛时间<strong>略有区别</strong>，截止时间以 <strong>2026-05-14
+            23:59:59（北京时间）</strong>为准。请在此之前，在当前页面上完整提交您的所有参赛文件，包括论文、代码以及其他辅助文件。
+        </li>
+      </ol>
+    </details>
+  </div>
+
+  <div class="notice-card submission">
+    <h2>📦 参赛文件提交说明</h2>
+    <ol style="padding-left:1.3rem;margin:0;">
+      <li>
+        本题的<strong>全部参赛文件均通过当前页面提交</strong>，包括最终论文、Python 可执行代码，以及可选的其他辅助文件（如模型权重、配置文件等），统一打包上传至本评测系统。
+      </li>
+      <li style="margin-top:0.5rem;">
+        <strong>论文须以 PDF 格式放入压缩包</strong>（与 <code>factor.py</code>、<code>predict.py</code>
+        同级）一并上传，命名为 "题号+参赛编号.pdf"。系统不会检查压缩包内容中是否存在论文，请确保<strong>最后一次上传的压缩包中包含你的最终参赛论文</strong>。
+      </li>
+      <li style="margin-top:0.5rem;">
+        论文中须包含<strong>在本地训练集数据上的 IC 指标</strong>；可选地附上在本系统上获得的验证集 IC 指标。
+      </li>
+    </ol>
+  </div>
+
+  <div class="notice-card contact">
+    <h2>📮 联系方式与 Token 派发</h2>
+    <p>
+      参赛 token 由 <a href="mailto:huadongbeiemail@163.com"
+        style="color:#4b1d8a;font-weight:600;">huadongbeiemail@163.com</a>
+      发送至队长报名邮箱（或第一个合法的报名邮箱）。Token 将在比赛开始后的前五天（05-01 ~ 05-05）<strong>分批发送</strong>，请留意<strong>收件箱及垃圾邮件文件夹</strong>。
+      若 <strong>5 月 6 日零点</strong>前仍未收到 token，或在提交、执行过程中遇到任何问题，请通过该地址与我们联系。
+    </p>
+    <p style="margin-top:0.6rem;font-size:0.87rem;color:#5a3a8a;">
+      <strong>注意：</strong>上述邮箱仅负责 C 题的 token 派发及评测系统相关问题的回复。对于其他题目的问题、或比赛其余未尽事宜，请直接联系赛事主办方。
+    </p>
+  </div>
+
+  <div class="card">
+    <details>
+      <summary><span style="font-size:1.1rem;font-weight:600;color:#16213e;">比赛说明</span></summary>
+
+      <h3>流程概述</h3>
+      <ol>
+        <li>在下方下载<strong>训练数据集</strong>，然后在本地完成特征构建和模型训练。</li>
+        <li>将<strong>论文（PDF）、代码和模型</strong>打包成单个 <code>.tar.gz</code> 或 <code>.zip</code> 文件，通过下方"提交"入口上传。</li>
+        <li>系统会在<strong>验证数据集</strong>上运行你的代码并计算 IC 分数。</li>
+        <li>每个 token <strong>每小时只能提交一次</strong>，请先在本地充分测试后再提交。</li>
+        <li>单次执行最长 <strong>1 小时</strong>，超时会被自动终止。</li>
+      </ol>
+
+      <p
+        style="margin-top:0.8rem;padding:0.7rem 1rem;background:#fff3cd;border-left:3px solid #e67e22;border-radius:4px;font-size:0.85rem;color:#7d4e00;">
+        ⚠️ <strong>行为规范：</strong>上传的代码会在我们的服务器上执行。任何恶意代码、沙箱逃逸或越权数据访问行为将导致<strong>立即取消比赛资格</strong>，我们保留进一步追究法律责任的权利。</p>
+
+      <h3>提交包结构</h3>
+      <p>你需要上传单个 <code>.tar.gz</code> 或 <code>.zip</code> 压缩包，至少包含以下两个入口脚本，以及可选的任意模型文件：</p>
+      <pre>submission.tar.gz  (或 submission.zip)
+├── factor.py          # 必需 — 特征生成
+├── predict.py         # 必需 — 信号生成
+├── C114.pdf           # 必需 — 最终参赛论文（PDF 格式，命名规则为"题号+参赛编号.pdf"）
+├── model1.pt          # 可选 — 你的模型文件（文件名/格式自定）
+├── tree_model.txt     # 可选
+└── ...</pre>
+
+      <h3>1. factor.py — 特征生成</h3>
+      <p>必须定义且仅定义以下函数：</p>
+      <pre>import numpy as np
+
+def generate_factors(dataset_name: str, data: np.ndarray) -> np.ndarray:
+    ...
+    return factors  # np.ndarray, shape (T, F), dtype float32</pre>
+
+      <p>系统会对每个 dataset 调用一次这个函数。<strong>你不需要自己读写文件</strong>，框架负责全部 I/O。</p>
+
+      <p
+        style="margin-top:0.5rem;padding:0.7rem 1rem;background:#e8f4fd;border-left:3px solid #3498db;border-radius:4px;font-size:0.85rem;color:#1a5276;">
+        <strong>无状态要求：</strong>你的模块在每个 dataset 调用前都会<strong>重新加载</strong>。不要依赖全局变量、缓存或任何跨调用保留的状态 — 它们在 reload
+        后不会保留。
+      </p>
+
+      <p><strong>参数：</strong></p>
+      <ul>
+        <li><code>dataset_name</code> — 匿名数据集 ID，如 <code>"dataset0"</code>, <code>"dataset1"</code>,
+          ..., <code>"dataset29"</code>
+        </li>
+        <li><code>data</code> — <code>np.ndarray</code>, shape <code>(T, 5)</code>, dtype <code>float32</code><br>
+          列顺序: <code>[open, high, low, close, volume]</code></li>
+      </ul>
+
+      <p><strong>返回值：</strong></p>
+      <ul>
+        <li><code>np.ndarray</code>, shape <code>(T, F)</code>, dtype <code>float32</code></li>
+        <li><code>F</code> = 你计算的特征数量，最多 <strong>512</strong></li>
+        <li>缺失/无效位置允许填 <code>NaN</code></li>
+        <li><code>T</code> 必须与输入完全一致</li>
+      </ul>
+
+      <h3>2. predict.py — 信号生成</h3>
+      <p>必须定义且仅定义以下函数：</p>
+      <pre>import numpy as np
+
+def generate_signals(dataset_name: str, factors: np.ndarray) -> np.ndarray:
+    ...
+    return signals  # np.ndarray, shape (T, 2), dtype float32</pre>
+
+      <p>这里是你加载模型、执行推理的地方。你可以自由决定如何使用特征 — 滑动窗口、直接输入、特征工程、多模型 ensemble 等都可以。</p>
+
+      <p><strong>参数：</strong></p>
+      <ul>
+        <li><code>dataset_name</code> — 与 factor.py 中相同的匿名数据集 ID</li>
+        <li><code>factors</code> — <code>np.ndarray</code>, shape <code>(T, F)</code>, dtype <code>float32</code><br>
+          你的 <code>factor.py</code> 为该 dataset 返回的特征</li>
+      </ul>
+
+      <p><strong>返回值：</strong></p>
+      <ul>
+        <li><code>np.ndarray</code>, shape <code>(T, 2)</code>, dtype <code>float32</code></li>
+        <li>列 0 = <strong>Ret5</strong>（5-bar 前瞻收益，见下方数据说明）的预测信号</li>
+        <li>列 1 = <strong>Ret60</strong>（60-bar 前瞻收益，见下方数据说明）的预测信号</li>
+        <li>允许填 <code>NaN</code> / <code>Inf</code>，评估时会将 invalid 值<strong>替换为 0 后仍参与 IC 计算</strong>（详见下方 "IC 指标定义"）
+        </li>
+        <li><code>T</code> 必须与输入完全一致</li>
+      </ul>
+
+      <p><strong>加载模型：</strong>你的模型文件位于容器内的 <code>/workspace/submission/</code>，用绝对路径加载：</p>
+      <pre>import torch
+import numpy as np
+from pathlib import Path
+
+MODEL_DIR = Path("/workspace/submission")
+
+def generate_signals(dataset_name: str, factors: np.ndarray) -> np.ndarray:
+    # 加载你的模型
+    torch_model = torch.jit.load(str(MODEL_DIR / "model1.pt"), map_location="cuda")
+    torch_model.eval()
+    # ... 你的推理逻辑 ...
+    return signals  # (T, 2)</pre>
+
+      <p
+        style="margin-top:0.5rem;padding:0.7rem 1rem;background:#e8f4fd;border-left:3px solid #3498db;border-radius:4px;font-size:0.85rem;color:#1a5276;">
+        <strong>无状态要求：</strong>与 factor.py 相同 — 模块会为每个 dataset 重新加载。请把模型加载放在函数内部，不要放在模块顶层。
+      </p>
+
+      <h3>本地测试方式</h3>
+      <pre># 测试 factor.py
+import numpy as np
+from factor import generate_factors
+
+mock_data = np.random.randn(1000, 5).astype(np.float32)
+factors = generate_factors("dataset0", mock_data)
+
+assert isinstance(factors, np.ndarray)
+assert factors.ndim == 2 and factors.shape[0] == 1000
+assert factors.shape[1] <= 512
+print("factor.py OK:", factors.shape)
+
+# 测试 predict.py
+from predict import generate_signals
+
+signals = generate_signals("dataset0", factors)
+assert signals.shape == (1000, 2)
+print("predict.py OK:", signals.shape)</pre>
+
+      <h3>最简示例</h3>
+      <p><strong>factor.py:</strong></p>
+      <pre>import numpy as np
+
+def generate_factors(dataset_name: str, data: np.ndarray) -> np.ndarray:
+    # data 列: [open, high, low, close, volume]
+    open_  = data[:, 0]
+    close  = data[:, 3]
+    volume = data[:, 4]
+
+    momentum = close / np.where(open_ == 0, np.nan, open_) - 1
+    log_vol  = np.log1p(volume)
+
+    return np.stack([momentum, log_vol], axis=1)  # (T, 2)</pre>
+
+      <p><strong>predict.py:</strong></p>
+      <pre>import numpy as np
+
+def generate_signals(dataset_name: str, factors: np.ndarray) -> np.ndarray:
+    T = factors.shape[0]
+    # 最简 baseline：直接用第一列特征作为 Ret5 和 Ret60 的信号
+    sig = factors[:, 0] if factors.shape[1] > 0 else np.zeros(T)
+    return np.stack([sig, sig], axis=1)  # (T, 2)</pre>
+
+      <p><strong>打包并提交（任选一种格式）：</strong></p>
+      <pre># tar.gz
+tar czf submission.tar.gz factor.py predict.py paper.pdf model1.pt tree.txt
+
+# 或 zip
+zip submission.zip factor.py predict.py paper.pdf model1.pt tree.txt</pre>
+
+      <h3>运行环境</h3>
+      <p>你的代码运行在如下 Docker 容器中：</p>
+      <ul>
+        <li><strong>Python：</strong>3.12</li>
+        <li><strong>GPU：</strong>1× NVIDIA RTX 4090（24 GB 显存），CUDA 12.4</li>
+        <li><strong>已安装的库：</strong>
+          <pre>torch         2.4.0+cu124
+numpy         2.4.4
+pandas        3.0.2
+scikit-learn  1.8.0
+scipy         1.17.1
+bottleneck    1.6.0
+numba         0.65.0
+statsmodels   0.14.6
+TA-Lib        0.6.8
+lightgbm      4.6.0
+transformers  5.5.4
+polars        1.39.3</pre>
+          容器内<strong>不允许联网</strong>，无法额外安装其他库。如果你的代码 import 了上述清单外的库，会以 <code>ModuleNotFoundError</code> 失败。
+        </li>
+      </ul>
+
+      <h3>评估流程</h3>
+      <pre>Step 1  entrypoint.py        # 框架: 对每个 dataset 调用 factor.py 的 generate_factors(), 保存特征 .npy
+Step 2  predict_entry.py     # 框架: 对每个 dataset 调用 predict.py 的 generate_signals(), 保存预测 .npy
+Step 3  evaluate/evaluate.py # 系统: 对预测打分 → IC 结果</pre>
+
+      <h3>IC 指标定义</h3>
+      <p>
+        本赛题使用的 <strong>IC</strong>（Information Coefficient）指标，定义为
+        <strong>同一样本集合上的预测信号与真实收益之间的 Pearson 相关系数</strong>。
+        给定某个 dataset、某个标签 <code>y ∈ {Ret5, Ret60}</code>、以及某个样本子集（normal 或 extreme），
+        记对应行上的预测向量为 <code>p = (p<sub>1</sub>, …, p<sub>n</sub>)</code>，真实收益向量为
+        <code>y = (y<sub>1</sub>, …, y<sub>n</sub>)</code>，其均值为 <code>p̄</code>、<code>ȳ</code>，则：
+      </p>
+      <pre>            Σᵢ (pᵢ − p̄)(yᵢ − ȳ)
+IC(p, y) = ───────────────────────────────────────────────
+           √( Σᵢ (pᵢ − p̄)² · Σᵢ (yᵢ − ȳ)² )</pre>
+
+      <p><strong>具体计算约定：</strong></p>
+      <ul>
+        <li>
+          <strong>Invalid 值处理：</strong>任一位置出现 <code>NaN</code> / <code>±Inf</code>（预测或真实收益任一侧）时，该位置会被<strong>替换为 0
+            后仍然参与计算</strong>，不会被剔除。也就是说，missing 的预测被当作"零信号"，同时该样本也会被算入均值 <code>p̄</code>、<code>ȳ</code>
+          与方差项里。因此，请尽量保证你的预测是有限数；把全段信号填 <code>NaN</code> 并<strong>不</strong>等同于"跳过该段"。
+        </li>
+        <li>若样本数 <code>n &lt; 2</code>，或替换后的分母为 0（预测全为同一常数、或真实收益全为同一常数），该 IC 记作 <code>NaN</code>。</li>
+        <li>IC 在每个 dataset 上<strong>独立计算</strong>；不同 dataset 的预测与收益<strong>不跨集合合并</strong>，避免尺度差异污染结果。</li>
+        <li>对每个 dataset 分别报告 <strong>4 个
+            IC</strong>：<code>normal × Ret5</code>、<code>normal × Ret60</code>、<code>extreme × Ret5</code>、<code>extreme × Ret60</code>。其中
+          extreme 子集 = 落入 <code>extreme_intervals</code> 任意闭区间内的行，normal 子集 = 其余行。</li>
+        <li>IC 取值范围为 <code>[−1, 1]</code>，绝对值越大表示预测与真实收益线性相关性越强；正负号由预测信号自身方向决定。</li>
+      </ul>
+
+      <p><strong>参考实现（与评测服务器逻辑一致）：</strong></p>
+      <pre>import numpy as np
+
+def pearson_ic(predictions: np.ndarray, labels: np.ndarray) -&gt; float:
+    if predictions.shape[0] &lt; 2:
+        return float("nan")
+    # Invalid → 0，然后整体参与相关系数计算
+    p = np.nan_to_num(predictions.astype(np.float64), nan=0.0, posinf=0.0, neginf=0.0)
+    l = np.nan_to_num(labels.astype(np.float64),      nan=0.0, posinf=0.0, neginf=0.0)
+    p = p - p.mean()
+    l = l - l.mean()
+    denom = np.sqrt((p**2).sum() * (l**2).sum())
+    if denom == 0:
+        return float("nan")
+    return float((p * l).sum() / denom)</pre>
+
+      <h3>资源限制</h3>
+      <ul>
+        <li>容器内无网络</li>
+        <li>GPU：1× RTX 4090 (24 GB) &nbsp;|&nbsp; 内存：80 GB &nbsp;|&nbsp; CPU：16 核 &nbsp;|&nbsp; 最长运行时间：1 小时</li>
+        <li>提交包大小：最大 150 MB</li>
+      </ul>
+
+      <h3>数据生命周期</h3>
+      <p>每次提交相互独立，运行结束后：</p>
+      <ul>
+        <li>你上传的<strong>代码、论文和模型文件</strong>会保留在服务器，用于<strong>赛后审核与核查</strong>。</li>
+        <li>执行过程中生成的<strong>特征和预测中间文件</strong>（<code>.npy</code>）会被清理。</li>
+        <li>保留 <strong>IC 分数</strong>和任务状态，可通过下方 "Query Result" 查询。</li>
+      </ul>
+
+      <h3>数据说明</h3>
+
+      <p><strong>下载结构。</strong>压缩包包含 30 个数据集（<code>dataset0</code> – <code>dataset29</code>），每个数据集两个 <code>.npy</code>
+        文件，共 60 个文件：</p>
+      <pre>dataset0_train_ohlcv.npy
+dataset0_train_extreme_intervals.npy
+dataset1_train_ohlcv.npy
+dataset1_train_extreme_intervals.npy
+...
+dataset29_train_ohlcv.npy
+dataset29_train_extreme_intervals.npy</pre>
+
+      <p><strong><code>&lt;dataset&gt;_train_ohlcv.npy</code></strong> — shape <code>(T, 8)</code>, dtype
+        <code>float32</code>
+      </p>
+      <ul>
+        <li><code>[:, 0]</code> &nbsp;<code>index</code> — 整数编号，用于与 <code>extreme_intervals</code>
+          对齐；<strong>不是</strong>输入数据，不应作为预测特征</li>
+        <li><code>[:, 1]</code> &nbsp;<code>open</code></li>
+        <li><code>[:, 2]</code> &nbsp;<code>high</code></li>
+        <li><code>[:, 3]</code> &nbsp;<code>low</code></li>
+        <li><code>[:, 4]</code> &nbsp;<code>close</code></li>
+        <li><code>[:, 5]</code> &nbsp;<code>volume</code></li>
+        <li><code>[:, 6]</code> &nbsp;<code>Ret5</code> &nbsp;= <code>log(close[i+5] / close[i])</code> &nbsp;— 5-bar
+          前瞻收益</li>
+        <li><code>[:, 7]</code> &nbsp;<code>Ret60</code> = <code>log(close[i+60] / close[i])</code> — 60-bar 前瞻收益
+        </li>
+      </ul>
+
+      <p><strong><code>&lt;dataset&gt;_train_extreme_intervals.npy</code></strong> — shape <code>(N, 2)</code>,
+        dtype
+        <code>int64</code><br>
+        每一行 <code>[start, end]</code> 是一个<strong>闭区间</strong>（与 ohlcv 数组的 <code>[:, 0]</code> 列 index 匹配），标记一段极端行情区间。
+      </p>
+
+      <p><strong>任务目标。</strong>设计特征与模型，最大化在<strong>正常（非极端）</strong>行情下以及<strong>极端行情</strong>区间下的信号预测 IC。</p>
+    </details>
+  </div>
+
+  <div class="card">
+    <h2>Download Training Dataset</h2>
+    <p style="font-size:0.88rem;color:#666;margin-bottom:0.8rem;">
+      下载链接对单个 IP 有访问频率限制。若短时间内多次请求（教育网用户尤其需注意），可能会被临时拒绝访问，请等待约 1 小时后再重试。
+    </p>
+    <a href="https://ai.download.qpalpha.com/competitions/train_dataset.zip" class="btn-link" target="_blank"
+      rel="noopener">Download</a>
+  </div>
+
+  <div class="card">
+    <h2>Submit</h2>
+    <div id="submitStatus" class="submit-status loading">⏳ 正在从服务器获取当前时间…</div>
+    <label for="token">Token</label>
+    <input type="text" id="token" placeholder="your-token-here">
+    <label for="submission">Submission package (.tar.gz 或 .zip)</label>
+    <input type="file" id="submission" accept=".tar.gz,.tgz,.zip">
+    <button id="submitBtn" onclick="doSubmit()" disabled>Submit</button>
+    <div id="submitMsg"></div>
+  </div>
+
+  <div class="card">
+    <h2>Submission History</h2>
+    <label for="historyToken">Token</label>
+    <input type="text" id="historyToken" placeholder="your-token-here">
+    <button onclick="doHistory(1)">Query History</button>
+    <div id="historyResult"></div>
+  </div>
+
+  <div class="card">
+    <h2>Query Result</h2>
+    <label for="queryToken">Token</label>
+    <input type="text" id="queryToken" placeholder="your-token-here">
+    <label for="jobId">Submission ID</label>
+    <input type="text" id="jobId" placeholder="submission-id">
+    <button onclick="doQuery()">Query</button>
+    <div id="queryResult"></div>
+  </div>
+
+  <script>
+    // Sync token across all cards
+    const tokenFields = ['token', 'historyToken', 'queryToken'];
+    tokenFields.forEach(id => {
+      document.getElementById(id).addEventListener('input', function () {
+        const val = this.value;
+        tokenFields.forEach(other => {
+          if (other !== id) document.getElementById(other).value = val;
+        });
+      });
+    });
+
+    // ----- Trusted time & submission schedule gating -----
+    // We never trust the local system / browser clock for the submission window.
+    // Authoritative source: our own server via GET /api/schedule — the host is
+    // under our control and its clock is synchronized via NTP, so it is the
+    // single source of truth used for both frontend gating and backend
+    // enforcement of the submission window.
+    async function fetchTrustedTimeMs() {
+      try {
+        const res = await fetch('/api/schedule', { cache: 'no-store' });
+        if (res.ok) {
+          const j = await res.json();
+          if (j && j.now) {
+            const t = new Date(j.now).getTime();
+            if (Number.isFinite(t) && t > 0) return { ms: t, source: 'Server' };
+          }
+        }
+      } catch (e) { /* fall through */ }
+      return null;
+    }
+
+    function formatBeijing(ms) {
+      // Render as Beijing time (UTC+8) regardless of local tz
+      const d = new Date(ms + 8 * 3600 * 1000);
+      const pad = n => String(n).padStart(2, '0');
+      return `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())} `
+        + `${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}:${pad(d.getUTCSeconds())}`;
+    }
+
+    const _schedule = {
+      openMs: null,
+      closeMs: null,
+      // Last known trusted time + local perf offset, so we can tick without re-hitting the API.
+      refTrustedMs: null,
+      refLocalMs: null,
+      status: 'loading',  // 'loading' | 'before' | 'open' | 'closed' | 'error'
+    };
+
+    function currentTrustedMs() {
+      if (_schedule.refTrustedMs == null) return null;
+      return _schedule.refTrustedMs + (Date.now() - _schedule.refLocalMs);
+    }
+
+    function applyScheduleStatus() {
+      const statusEl = document.getElementById('submitStatus');
+      const btn = document.getElementById('submitBtn');
+      const now = currentTrustedMs();
+
+      if (now == null || _schedule.openMs == null || _schedule.closeMs == null) {
+        statusEl.className = 'submit-status closed';
+        statusEl.textContent = '⚠️ 无法从服务器获取当前时间，为防止在非提交窗口内提交，提交按钮已禁用。请稍后刷新页面重试。';
+        btn.disabled = true;
+        _schedule.status = 'error';
+        return;
+      }
+
+      if (now < _schedule.openMs) {
+        statusEl.className = 'submit-status pending-time';
+        statusEl.textContent = `⏳ 提交通道尚未开启。开启时间：${formatBeijing(_schedule.openMs)} (北京时间)。`;
+        btn.disabled = true;
+        _schedule.status = 'before';
+      } else if (now > _schedule.closeMs) {
+        statusEl.className = 'submit-status closed';
+        statusEl.textContent = `🔒 提交通道已关闭（截止于 ${formatBeijing(_schedule.closeMs)} 北京时间）。`;
+        btn.disabled = true;
+        _schedule.status = 'closed';
+      } else {
+        statusEl.className = 'submit-status open';
+        statusEl.textContent = `✅ 提交通道已开启，截止时间 ${formatBeijing(_schedule.closeMs)} (北京时间)。`;
+        btn.disabled = false;
+        _schedule.status = 'open';
+      }
+    }
+
+    async function initSchedule() {
+      // Single round-trip to the backend gives us both the authoritative
+      // open/close times and the current server clock.
+      try {
+        const res = await fetch('/api/schedule', { cache: 'no-store' });
+        if (res.ok) {
+          const j = await res.json();
+          _schedule.openMs = new Date(j.submission_open_at).getTime();
+          _schedule.closeMs = new Date(j.submission_close_at).getTime();
+          if (j.now) {
+            _schedule.refTrustedMs = new Date(j.now).getTime();
+            _schedule.refLocalMs = Date.now();
+          }
+        }
+      } catch (e) { /* handled by applyScheduleStatus */ }
+
+      applyScheduleStatus();
+      // Tick every second to flip from "before" → "open" → "closed" live.
+      setInterval(applyScheduleStatus, 1000);
+      // Re-sync trusted time periodically to correct any local-clock drift.
+      setInterval(async () => {
+        const nt = await fetchTrustedTimeMs();
+        if (nt) {
+          _schedule.refTrustedMs = nt.ms;
+          _schedule.refLocalMs = Date.now();
+        }
+      }, 5 * 60 * 1000);
+    }
+
+    initSchedule();
+
+    async function doSubmit() {
+      const token = document.getElementById('token').value.trim();
+      const submission = document.getElementById('submission').files[0];
+      const msg = document.getElementById('submitMsg');
+      const btn = document.getElementById('submitBtn');
+
+      if (!token || !submission) {
+        msg.className = 'msg err';
+        msg.textContent = 'Please fill in all fields.';
+        return;
+      }
+
+      if (_schedule.status !== 'open') {
+        msg.className = 'msg err';
+        msg.textContent = '当前不在提交窗口内，无法提交。';
+        return;
+      }
+
+      const form = new FormData();
+      form.append('token', token);
+      form.append('submission', submission);
+
+      btn.disabled = true;
+      msg.className = 'msg';
+      msg.textContent = 'Uploading...';
+
+      try {
+        const res = await fetch('/api/submit', { method: 'POST', body: form });
+        const data = await res.json();
+        if (res.ok) {
+          msg.className = 'msg ok';
+          msg.textContent = 'Submitted! ID: ' + data.submission_id;
+          document.getElementById('historyToken').value = token;
+          document.getElementById('queryToken').value = token;
+          document.getElementById('jobId').value = data.submission_id;
+        } else {
+          msg.className = 'msg err';
+          msg.textContent = data.detail || 'Submit failed';
+        }
+      } catch (e) {
+        msg.className = 'msg err';
+        msg.textContent = 'Network error: ' + e.message;
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    let _historyCurrentPage = 1;
+
+    async function doHistory(page) {
+      const token = document.getElementById('historyToken').value.trim();
+      const container = document.getElementById('historyResult');
+
+      if (!token) {
+        container.className = 'msg err';
+        container.textContent = 'Please enter your token.';
+        return;
+      }
+
+      container.className = 'msg';
+      container.textContent = 'Loading...';
+
+      try {
+        const res = await fetch(`/api/submissions?token=${encodeURIComponent(token)}&page=${page}&per_page=10`);
+        const data = await res.json();
+        if (!res.ok) {
+          container.className = 'msg err';
+          container.textContent = data.detail || 'Query failed';
+          return;
+        }
+        _historyCurrentPage = data.page;
+        renderHistory(data, container);
+      } catch (e) {
+        container.className = 'msg err';
+        container.textContent = 'Network error: ' + e.message;
+      }
+    }
+
+    function renderHistory(data, container) {
+      container.className = '';
+      container.innerHTML = '';
+
+      if (data.submissions.length === 0) {
+        container.className = 'msg';
+        container.textContent = 'No submissions found for this token.';
+        return;
+      }
+
+      const table = document.createElement('table');
+      table.className = 'history-table';
+      const thead = document.createElement('thead');
+      thead.innerHTML = '<tr><th>Submission ID</th><th>Status</th><th>Submitted At</th></tr>';
+      table.appendChild(thead);
+
+      const tbody = document.createElement('tbody');
+      for (const s of data.submissions) {
+        const tr = document.createElement('tr');
+
+        const tdId = document.createElement('td');
+        tdId.className = 'id-cell';
+        tdId.textContent = s.id;
+        tdId.title = 'Click to view details';
+        tdId.addEventListener('click', () => {
+          document.getElementById('jobId').value = s.id;
+          doQuery();
+        });
+
+        const tdStatus = document.createElement('td');
+        const badge = document.createElement('span');
+        badge.className = `status-badge status-${s.status}`;
+        badge.textContent = (s.status || '').toUpperCase();
+        tdStatus.appendChild(badge);
+
+        const tdTime = document.createElement('td');
+        tdTime.textContent = s.created_at ? new Date(s.created_at).toLocaleString() : '—';
+
+        tr.append(tdId, tdStatus, tdTime);
+        tbody.appendChild(tr);
+      }
+      table.appendChild(tbody);
+      container.appendChild(table);
+
+      // Pagination
+      const totalPages = Math.ceil(data.total / data.per_page);
+      if (totalPages > 1) {
+        const pag = document.createElement('div');
+        pag.className = 'pagination';
+
+        const prev = document.createElement('button');
+        prev.textContent = 'Prev';
+        prev.disabled = data.page <= 1;
+        prev.addEventListener('click', () => doHistory(data.page - 1));
+
+        const info = document.createElement('span');
+        info.textContent = `Page ${data.page} / ${totalPages}`;
+
+        const next = document.createElement('button');
+        next.textContent = 'Next';
+        next.disabled = data.page >= totalPages;
+        next.addEventListener('click', () => doHistory(data.page + 1));
+
+        pag.append(prev, info, next);
+        container.appendChild(pag);
+      }
+    }
+
+    async function doQuery() {
+      const token = document.getElementById('queryToken').value.trim();
+      const jobId = document.getElementById('jobId').value.trim();
+      const container = document.getElementById('queryResult');
+
+      if (!token || !jobId) {
+        container.className = 'msg err';
+        container.textContent = 'Please fill in token and submission ID.';
+        return;
+      }
+
+      container.className = 'msg';
+      container.textContent = 'Loading...';
+
+      try {
+        const res = await fetch(`/api/result/${jobId}?token=${encodeURIComponent(token)}`);
+        const data = await res.json();
+        if (!res.ok) {
+          container.className = 'msg err';
+          container.textContent = data.detail || 'Query failed';
+          return;
+        }
+        renderResult(data, container);
+      } catch (e) {
+        container.className = 'msg err';
+        container.textContent = 'Network error: ' + e.message;
+      }
+    }
+
+    function renderResult(data, container) {
+      container.className = 'result-view';
+      container.innerHTML = '';
+
+      // Header: status badge
+      const header = document.createElement('div');
+      header.className = 'result-header';
+
+      const badge = document.createElement('span');
+      badge.className = `status-badge status-${data.status}`;
+      badge.textContent = (data.status || '').toUpperCase();
+      header.appendChild(badge);
+      container.appendChild(header);
+
+      // Timestamps
+      const meta = document.createElement('div');
+      meta.className = 'result-meta';
+      [['Submitted', data.created_at],
+      ['Started', data.started_at],
+      ['Finished', data.finished_at]]
+        .filter(([, v]) => !!v)
+        .forEach(([label, value]) => {
+          const row = document.createElement('div');
+          row.textContent = `${label}: ${new Date(value).toLocaleString()}`;
+          meta.appendChild(row);
+        });
+      container.appendChild(meta);
+
+      // Phase timings (factor / predict)
+      if (data.timings) {
+        container.appendChild(renderTimings(data.timings, data));
+      }
+
+      // Completed → show per-dataset IC breakdown
+      if (data.status === 'completed' && data.details) {
+        container.appendChild(renderDetails(data.details));
+      }
+
+      // Failed / timeout → show error log
+      if ((data.status === 'failed' || data.status === 'timeout') && data.error_message) {
+        const wrap = document.createElement('details');
+        wrap.open = true;
+        const s = document.createElement('summary');
+        s.textContent = data.status === 'timeout' ? 'Timeout message' : 'Error log';
+        wrap.appendChild(s);
+        const pre = document.createElement('pre');
+        pre.className = 'error-log';
+        pre.textContent = data.error_message;
+        wrap.appendChild(pre);
+        container.appendChild(wrap);
+      }
+    }
+
+    function fmtDuration(s) {
+      if (s == null || !Number.isFinite(s)) return '—';
+      if (s < 60) return `${s.toFixed(2)}s`;
+      const m = Math.floor(s / 60);
+      const rem = s - m * 60;
+      if (m < 60) return `${m}m ${rem.toFixed(1)}s`;
+      const h = Math.floor(m / 60);
+      return `${h}h ${m - h * 60}m ${rem.toFixed(0)}s`;
+    }
+
+    function renderTimings(timings, data) {
+      const wrap = document.createElement('div');
+      wrap.className = 'phase-timings';
+
+      const title = document.createElement('h4');
+      title.textContent = 'Phase timings';
+      wrap.appendChild(title);
+
+      const table = document.createElement('table');
+      table.className = 'timing-table';
+      const rows = [
+        ['特征生成 (factor.py)', timings.factor_seconds],
+        ['信号推理 (predict.py)', timings.predict_seconds],
+      ];
+      // Total wall clock (started_at → finished_at) is useful as a sanity
+      // check; the difference with factor+predict is evaluation + overhead.
+      let totalKnown = null;
+      if (data && data.started_at && data.finished_at) {
+        totalKnown = (new Date(data.finished_at) - new Date(data.started_at)) / 1000;
+      }
+      for (const [label, sec] of rows) {
+        const tr = document.createElement('tr');
+        const tdLabel = document.createElement('td');
+        tdLabel.textContent = label;
+        const tdVal = document.createElement('td');
+        tdVal.textContent = fmtDuration(sec);
+        tr.append(tdLabel, tdVal);
+        table.appendChild(tr);
+      }
+      if (totalKnown != null) {
+        const tr = document.createElement('tr');
+        const tdLabel = document.createElement('td');
+        tdLabel.textContent = '总耗时 (started → finished)';
+        const tdVal = document.createElement('td');
+        tdVal.textContent = fmtDuration(totalKnown);
+        tr.append(tdLabel, tdVal);
+        table.appendChild(tr);
+      }
+      wrap.appendChild(table);
+
+      return wrap;
+    }
+
+    function renderDetails(details) {
+      const wrap = document.createElement('details');
+      const summary = document.createElement('summary');
+      summary.textContent = 'Per-dataset IC breakdown';
+      wrap.appendChild(summary);
+
+      if (details.normal_ic) {
+        wrap.appendChild(renderICTable('Normal IC (non-extreme intervals)', details.normal_ic));
+      }
+      if (details.extreme_ic) {
+        wrap.appendChild(renderICTable('Extreme IC (extreme intervals only)', details.extreme_ic));
+      }
+      return wrap;
+    }
+
+    function renderICTable(title, icMap) {
+      const wrap = document.createElement('div');
+      const h = document.createElement('h4');
+      h.textContent = title;
+      wrap.appendChild(h);
+
+      const table = document.createElement('table');
+      table.className = 'ic-table';
+      const thead = document.createElement('thead');
+      thead.innerHTML = '<tr><th>Dataset</th><th>Ret5</th><th>Ret60</th></tr>';
+      table.appendChild(thead);
+
+      const tbody = document.createElement('tbody');
+      for (const [name, vals] of Object.entries(icMap)) {
+        const tr = document.createElement('tr');
+        const tdName = document.createElement('td');
+        tdName.textContent = name;
+        const tdR5 = document.createElement('td');
+        tdR5.textContent = fmtIC(vals.Ret5);
+        const tdR60 = document.createElement('td');
+        tdR60.textContent = fmtIC(vals.Ret60);
+        tr.append(tdName, tdR5, tdR60);
+        tbody.appendChild(tr);
+      }
+      table.appendChild(tbody);
+      wrap.appendChild(table);
+      return wrap;
+    }
+
+    function fmtIC(v) {
+      if (v === null || v === undefined || Number.isNaN(v)) return '—';
+      return Number(v).toFixed(6);
+    }
+  </script>
+</body>
+
+</html>
