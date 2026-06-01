@@ -1,8 +1,10 @@
 # VolatilityReturn
 
+![Python](https://img.shields.io/badge/python-3.12-blue) ![License](https://img.shields.io/badge/license-MIT-green)
+
 华东杯数学建模竞赛 C 题解决方案。对 30 支高波动标的预测 Ret5（5分钟收益率）和 Ret60（60分钟收益率），评测指标为 Pearson IC，覆盖 normal 和 extreme 两种行情，共 4 个 IC 取均值。
 
-最终成绩：avg IC ≈ 0.0586，历史最佳 0.0590。
+最终成绩：avg IC ≈ 0.0663，历史最佳 0.0590。
 
 ## 方法概述
 
@@ -31,21 +33,20 @@ scripts/
   train_global.py      全局模型训练
 
 tests/                 单元测试 + 属性测试
-docs/                  赛题文档
 .kiro/specs/           各版本设计文档（v1-v6 演进记录）
 ```
 
 ## 模型演进
 
-| 版本 | 核心改动 |
-|------|---------|
-| v1 | 初始 LGB pipeline |
-| v2 | Phase 优化，per-dataset 模型 |
-| v3 | 加入 Transformer ensemble |
-| v4 | 长周期全局模型 |
-| v5 | H20 全量训练，双目标 GRU/TF |
-| v6 | 反馈优化，极端行情专用模型 |
-| v7 | 9信号源集成 + 自动贪心爬坡 |
+| 版本 | 日期 | 核心改动 |
+|------|------|---------|
+| v1 | 2026-05-01 | 初始 LGB pipeline，109维特征 |
+| v2 | 2026-05-05 | IC feval + 特征扩展至147维 + GRU |
+| v3 | 2026-05-08 | Transformer ensemble + GPU训练 |
+| v4 | 2026-05-10 | 全局LGB模型 + 165维长周期特征 |
+| v5 | 2026-05-12 | H20全量训练，双目标GRU/TF |
+| v6 | 2026-05-13 | IC-aware loss + 极端行情专用模型 |
+| v7 | 2026-05-15 | 9信号源集成 + 自动贪心爬坡 |
 
 ## 关键结论
 

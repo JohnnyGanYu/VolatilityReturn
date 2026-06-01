@@ -5,7 +5,7 @@
 #       bash scripts/wait_and_submit.sh 3 submissions/submission_round3.tar.gz
 
 TOKEN="7027dacbb2d44548add68a006ea99f8a"
-API="http://118.196.107.100:8000"
+API="http://<PLATFORM_HOST>:8000"
 ROUND=${1:-2}
 SUBMISSION=${2:-"submissions/submission_round${ROUND}.tar.gz"}
 

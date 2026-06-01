@@ -2,7 +2,7 @@
 # Iterative feedback loop: submit → get IC → update best → try new configs → repeat
 # Phase 1: random exploration (LGB>=0.3), Phase 2: hill-climbing
 TOKEN="7027dacbb2d44548add68a006ea99f8a"
-API="http://118.196.107.100:8000"
+API="http://<PLATFORM_HOST>:8000"
 LOG="iterative_submit.log"
 MAX_ITERATIONS=20
 

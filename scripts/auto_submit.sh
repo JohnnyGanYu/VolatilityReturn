@@ -8,7 +8,7 @@
 #   bash scripts/auto_submit.sh 1 --once     # 只提交一轮不迭代
 
 TOKEN="7027dacbb2d44548add68a006ea99f8a"
-API="http://118.196.107.100:8000"
+API="http://<PLATFORM_HOST>:8000"
 LOG="auto_submit_v6.log"
 MAX_ROUNDS=10  # 最多迭代轮数
 

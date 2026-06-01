@@ -20,7 +20,7 @@ import argparse
 import requests
 from pathlib import Path
 
-BASE_URL = "http://118.196.107.100:8000"
+BASE_URL = "http://<PLATFORM_HOST>:8000"
 POLL_INTERVAL = 30  # 每30秒查询一次结果
 MAX_POLL_TIME = 3900  # 最多等65分钟（1小时执行 + 5分钟余量）
 
