@@ -1,6 +1,6 @@
 # VolatilityReturn
 
-![Python](https://img.shields.io/badge/python-3.12-blue) ![License](https://img.shields.io/badge/license-MIT-green)
+![Python](https://img.shields.io/badge/python-3.12-blue) ![License](https://img.shields.io/badge/license-MIT-green) [![RepoRanker](https://reporanker.com/badge/JohnnyGanYu/VolatilityReturn)](https://reporanker.com/repos/JohnnyGanYu/VolatilityReturn)
 
 华东杯数学建模竞赛 C 题解决方案。对 30 支高波动标的预测 Ret5（5分钟收益率）和 Ret60（60分钟收益率），评测指标为 Pearson IC，覆盖 normal 和 extreme 两种行情，共 4 个 IC 取均值。
 
